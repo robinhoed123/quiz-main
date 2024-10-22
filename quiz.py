@@ -2,6 +2,7 @@ import customtkinter as ui
 import winsound
 import re
 import random
+import time
 # Definieer knopafmetingen
 windowX = 1200
 windowY = 800
@@ -17,9 +18,6 @@ quizepad = ""
 
 def start_quiz():
     global naam, quizepad
-
-
-
     # Maak een nieuw venster voor de quiz
     quiz_window = ui.CTkToplevel()
     quiz_window.geometry(f"{windowX}x{windowY}")
@@ -62,23 +60,29 @@ def start_quiz():
         C_button.configure(text=options[current_question][2])
         D_button.configure(text=options[current_question][3])
         score_label.configure(text=f"Score: {score}")
-        lives_label.configure(text=f"Levens: {Levens}")                                                                                                                                                                                             
-
+        lives_label.configure(text=f"Levens: {Levens}")
+                                                                                                                                                                                   
+    def get_answer_text(option):
+        option_index = {'A': 0, 'B': 1, 'C': 2, 'D': 3}
+        return options[current_question][option_index[option]]
     def check_answer(selected_option):
         nonlocal current_question, score, Levens
 
         if selected_option == answers[current_question]:
             score += 1
+            answer_label.configure(text=f"correct", text_color="Green")
         else:
             Levens -= 1
-
+            answer_label.configure(text=f"FOUT antwoordt was {get_answer_text(answers[current_question])}", text_color="red")
         current_question += 1
-
         if Levens <= 0:
             quiz_window.destroy()
             show_results(score)
         else:
-            update_question()
+            def next_qestion():
+                answer_label.configure(text="")
+                update_question()
+            quiz_window.after(5000, next_qestion)#sleep werkte niet en after neemt maar een argumet van daar de extra fucntion next qestion
 
     # Maak een frame voor de quizinformatie
     info_frame = ui.CTkFrame(quiz_window)
@@ -97,7 +101,7 @@ def start_quiz():
     lives_label.grid(row=0, column=2, padx=20)
 
     # Vraag label
-    question_label = ui.CTkLabel(quiz_window, text="", font=("Arial", 30))
+    question_label = ui.CTkLabel(quiz_window, text="", font=("Arial", 36))
     question_label.pack(pady=40)
 
     # Opties frame
@@ -116,6 +120,10 @@ def start_quiz():
 
     D_button = ui.CTkButton(options_frame, text="", width=button_width, height=button_height, font=button_font, command=lambda: check_answer('D'))
     D_button.grid(row=1, column=1, padx=30, pady=18)
+
+    # antwoordt label
+    answer_label = ui.CTkLabel(quiz_window, text="", font=("Arial", 21))
+    answer_label.pack(pady=40)
 
     # Start de eerste vraag
     update_question()
