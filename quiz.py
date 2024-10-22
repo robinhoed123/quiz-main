@@ -74,6 +74,7 @@ def start_quiz():
         else:
             Levens -= 1
             answer_label.configure(text=f"FOUT antwoordt was {get_answer_text(answers[current_question])}", text_color="red")
+        
         current_question += 1
         if Levens <= 0:
             quiz_window.destroy()
@@ -82,6 +83,7 @@ def start_quiz():
             def next_qestion():
                 answer_label.configure(text="")
                 update_question()
+
             quiz_window.after(5000, next_qestion)#sleep werkte niet en after neemt maar een argumet van daar de extra fucntion next qestion
 
     # Maak een frame voor de quizinformatie
