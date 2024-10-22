@@ -31,6 +31,7 @@ response = chat_session.send_message(f"genereer me een quiz van 20 vragen in de 
 with open(f"{thema}.txt", "w") as file:
   file.write(response.text)
 
+
 with open(f"{thema}.txt", "r") as file:
   lines = file.readlines()
 
