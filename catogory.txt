@@ -18,3 +18,5 @@ kies_maar
 kies_maar.txt
 OOP
 OOP.txt
+slavernij
+slavernij.txt
