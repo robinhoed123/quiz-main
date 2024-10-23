@@ -2,7 +2,7 @@ import customtkinter as ui
 import winsound
 import re
 import random
-import time
+import Ai
 # Definieer knopafmetingen
 windowX = 1200
 windowY = 800
@@ -15,6 +15,58 @@ volume = 100
 naam = "no name"
 catagorypad = "catogory.txt"
 quizepad = ""
+
+def open_ai_window(home):
+    home.destroy()
+    ai_window = ui.CTkToplevel()
+    ai_window.geometry(f"{windowX}x{windowY}")
+    ai_window.title("AI")
+
+    # Voeg een label toe
+    theme_label = ui.CTkLabel(ai_window, text="Geef een thema", font=button_font)
+    theme_label.pack(pady=10)
+
+    # Voeg een invoerveld toe
+    theme_entry = ui.CTkEntry(ai_window, width=button_width, font=button_font)
+    theme_entry.pack(pady=20)
+
+    # Voeg een error label toe
+    error_label = ui.CTkLabel(ai_window, text="", font=("Arial", 20), text_color="red")
+    error_label.pack(pady=5)
+
+    # Voeg een frame toe voor de knoppen
+    button_frame = ui.CTkFrame(ai_window)
+    button_frame.pack(pady=20)
+
+    # Voeg de "Terug" knop toe
+    back_button = ui.CTkButton(button_frame, text="Terug", command=lambda: close_window(ai_window), width=button_width//2, height=button_height, font=button_font)
+    back_button.pack(side="left", padx=10)
+
+    # Voeg de "Start Quiz" knop toe
+    start_quiz_button = ui.CTkButton(button_frame, text="generate Quiz", command=lambda: gen_quiz(), width=button_width//2, height=button_height, font=button_font)
+    start_quiz_button.pack(side="right", padx=10)
+
+    def gen_quiz():
+        theme = theme_entry.get().strip()
+        if not theme:
+            error_label.configure(text="Thema mag niet leeg zijn")
+            return
+        if len(theme) > 12:
+            error_label.configure(text="Thema mag niet langer zijn dan 12 karakters")
+            return
+        if not re.match("^[a-zA-Z0-9]*$", theme):
+            error_label.configure(text="Thema mag alleen letters en cijfers bevatten")
+            return
+
+        result = Ai.generate_quiz(theme)
+        if result == -1:
+            error_label.configure(text="Quiz kon niet worden gegenereerd")
+        else:
+            global quizepad
+            quizepad = result
+            ai_window.destroy()
+            start_quiz()
+
 
 def start_quiz():
     global naam, quizepad
@@ -84,7 +136,7 @@ def start_quiz():
                 answer_label.configure(text="")
                 update_question()
 
-            quiz_window.after(5000, next_qestion)#sleep werkte niet en after neemt maar een argumet van daar de extra fucntion next qestion
+            quiz_window.after(3600, next_qestion)#sleep werkte niet en after neemt maar een argumet van daar de extra fucntion next qestion
 
     # Maak een frame voor de quizinformatie
     info_frame = ui.CTkFrame(quiz_window)
@@ -124,7 +176,7 @@ def start_quiz():
     D_button.grid(row=1, column=1, padx=30, pady=18)
 
     # antwoordt label
-    answer_label = ui.CTkLabel(quiz_window, text="", font=("Arial", 21))
+    answer_label = ui.CTkLabel(quiz_window, text="", font=("Arial", 32, "bold"))
     answer_label.pack(pady=40)
 
     # Start de eerste vraag
@@ -167,13 +219,10 @@ def Open_Quiz_setup(home):
     # Categorie selectie
     # Lees categorieën uit het bestand
     with open(catagorypad, 'r') as file:
-        lines = file.readlines()
-        categories = [line.strip() for line in lines if line.strip()]
+        categories = [line.strip() for line in file if line.strip()]
 
     # Maak een woordenboek om categorieën aan hun paden te koppelen
-    category_dict = {}
-    for i in range(0, len(categories), 2):
-        category_dict[categories[i]] = categories[i + 1]
+    category_dict = {category.replace('.txt', ''): category for category in categories}
 
     # Maak een selectiebox voor categorieën
     category_choices = list(category_dict.keys())
@@ -220,12 +269,8 @@ def Open_Quiz_setup(home):
     next_button.pack(pady=20)
 
     # Terug-knop om het venster te sluiten en het hoofdvenster weer te tonen
-    back_button = ui.CTkButton(setup_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: Close_Quiz_setup(Quiz_setup))
+    back_button = ui.CTkButton(setup_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: close_window(Quiz_setup))
     back_button.pack(pady=20)
-
-def Close_Quiz_setup(Quiz_setup):
-    Quiz_setup.destroy()
-    home_start()
 
 # Open instellingen
 def open_settings(home):
@@ -283,11 +328,11 @@ def open_settings(home):
     color_selection_box.pack(pady=20)
 
     # Terug-knop
-    back_button = ui.CTkButton(settings_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: close_settings(settings_window))
+    back_button = ui.CTkButton(settings_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: close_window(settings_window))
     back_button.pack(pady=20)
 
-def close_settings(settings_window):
-    settings_window.destroy()
+def close_window(window):
+    window.destroy()
     home_start()
 
 def exit_app():
@@ -319,13 +364,18 @@ def home_start():
     settings_button.grid(row=1, column=0, padx=30, pady=18)
     settings_button.configure(command=lambda: open_settings(home))
 
+    # AI knop
+    ai_button = ui.CTkButton(button_frame, text="AI", width=button_width, height=button_height, font=button_font)
+    ai_button.grid(row=2, column=0, padx=30, pady=18)
+    ai_button.configure(command=lambda: open_ai_window(home))
+
     # Score Bord knop
     score_board_button = ui.CTkButton(button_frame, text="Score Bord", width=button_width, height=button_height, font=button_font)
-    score_board_button.grid(row=2, column=0, padx=30, pady=18)
+    score_board_button.grid(row=3, column=0, padx=30, pady=18)
 
     # Exit knop
     exit_button = ui.CTkButton(button_frame, text="Exit", width=button_width, height=button_height, font=button_font)
-    exit_button.grid(row=3, column=0, padx=30, pady=18)
+    exit_button.grid(row=4, column=0, padx=30, pady=18)
     exit_button.configure(command=exit_app)
 
 # Initialiseer het welkomstvenster
