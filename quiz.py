@@ -387,7 +387,7 @@ def open_score_board(home):
     # Controleer of er spelers in de dataset zijn
     if not speler_scores:
         # Toon bericht als er geen spelers zijn
-        no_players_label = ui.CTkLabel(score_board_frame, text="Er zijn nog geen spelers aangemaakt", font=("Arial", 24, "bold"))
+        no_players_label = ui.CTkLabel(score_board_frame, text="Er zijn nog geen spelers aangemaakt", font=("Arial", 24))
         no_players_label.pack(pady=20)
 
         # Back-knop om terug te keren naar het hoofdscherm
