@@ -3,6 +3,12 @@ import winsound
 import re
 import random
 import Ai
+import json
+import os
+import atexit
+
+DATASET_FILE = "speler_scores.json"
+
 # Definieer knopafmetingen
 windowX = 1200
 windowY = 800
@@ -15,6 +21,23 @@ volume = 100
 naam = "no name"
 catagorypad = "catogory.txt"
 quizepad = ""
+speler_scores = {}
+
+# Functie om de scores te laden
+def load_scores():
+    global speler_scores
+    if os.path.exists(DATASET_FILE):
+        with open(DATASET_FILE, "r") as file:
+            speler_scores = json.load(file)
+    else:
+        speler_scores = {}
+
+# Functie om de scores op te slaan
+def save_scores():
+    with open(DATASET_FILE, "w") as file:
+        json.dump(speler_scores, file)
+
+load_scores()
 
 def open_ai_window(home):
     home.destroy()
@@ -183,6 +206,23 @@ def start_quiz():
     update_question()
 
 def show_results(score):
+    global naam, quizepad
+    # Haal de categorie naam uit het pad
+    categorie = quizepad.split("/")[-1].replace(".txt", "")
+
+    # Zet de naam om naar kleine letters
+    naam_lower = naam.lower()
+
+    # Update de dataset
+    if naam_lower not in speler_scores:
+        speler_scores[naam_lower] = {}
+    if categorie not in speler_scores[naam_lower] or speler_scores[naam_lower][categorie] < score:
+        speler_scores[naam_lower][categorie] = score
+    
+    # Sla de bijgewerkte dataset direct op
+    save_scores()
+
+    # Maak een nieuw venster voor de resultaten
     result_window = ui.CTkToplevel()
     result_window.geometry(f"{windowX}x{windowY}")
     result_window.title("Resultaten")
@@ -331,6 +371,63 @@ def open_settings(home):
     back_button = ui.CTkButton(settings_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: close_window(settings_window))
     back_button.pack(pady=20)
 
+def open_score_board(home):
+    # Verberg het hoofdvenster
+    home.destroy()
+    
+    # Maak een nieuw venster voor het Score Bord
+    score_board_window = ui.CTkToplevel()
+    score_board_window.geometry(f"{windowX}x{windowY}")
+    score_board_window.title("Score Bord")
+
+    # Maak een frame om de widgets te houden
+    score_board_frame = ui.CTkFrame(score_board_window)
+    score_board_frame.place(relx=0.5, rely=0.5, anchor='center')
+
+    # Controleer of er spelers in de dataset zijn
+    if not speler_scores:
+        # Toon bericht als er geen spelers zijn
+        no_players_label = ui.CTkLabel(score_board_frame, text="Er zijn nog geen spelers aangemaakt", font=("Arial", 24, "bold"))
+        no_players_label.pack(pady=20)
+
+        # Back-knop om terug te keren naar het hoofdscherm
+        back_button = ui.CTkButton(score_board_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: close_window(score_board_window))
+        back_button.pack(pady=20)
+    else:
+        # Dropdown-menu om speler te selecteren
+        players = list(speler_scores.keys())  # Haal alle speler namen uit de dataset
+        selected_player = ui.StringVar(value=players[0])  # Start met de eerste speler geselecteerd
+
+        # Label om de geselecteerde speler en scores te tonen
+        score_display_label = ui.CTkLabel(score_board_frame, text="", font=("Arial", 20))
+        score_display_label.pack(pady=20)
+
+        # Functie om scores van de geselecteerde speler te tonen
+        def show_selected_player_scores(speler):
+            if speler in speler_scores:
+                scores_text = f"Scores voor speler {speler}:\n"
+                scores_text += "\n".join([f"Categorie: {cat} - Hi-score: {score}" for cat, score in speler_scores[speler].items()])
+
+            # Update het label met scores van de geselecteerde speler
+            score_display_label.configure(text=scores_text)
+
+        # Dropdown-menu met spelers om de geselecteerde speler te wijzigen
+        player_selection_box = ui.CTkOptionMenu(
+            score_board_frame, variable=selected_player, values=players,
+            width=button_width, height=button_height, font=button_font,
+            command=show_selected_player_scores)
+        player_selection_box.pack(pady=20)
+
+        # Toon scores van de standaard geselecteerde speler
+        show_selected_player_scores(selected_player.get())
+
+        # Terug-knop om terug te keren naar het hoofdscherm
+        back_button = ui.CTkButton(score_board_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: close_window(score_board_window))
+        back_button.pack(pady=20)
+
+# Zorg ervoor dat save_scores wordt aangeroepen bij afsluiten
+atexit.register(save_scores)
+
 def close_window(window):
     window.destroy()
     home_start()
@@ -372,6 +469,7 @@ def home_start():
     # Score Bord knop
     score_board_button = ui.CTkButton(button_frame, text="Score Bord", width=button_width, height=button_height, font=button_font)
     score_board_button.grid(row=3, column=0, padx=30, pady=18)
+    score_board_button.configure(command=lambda: open_score_board(home))
 
     # Exit knop
     exit_button = ui.CTkButton(button_frame, text="Exit", width=button_width, height=button_height, font=button_font)
