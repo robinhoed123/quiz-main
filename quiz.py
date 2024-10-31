@@ -22,7 +22,7 @@ naam = "no name"
 catagorypad = "catogory.txt"
 quizepad = ""
 speler_scores = {}
-
+time = 20
 # Functie om de scores te laden
 def load_scores():
     global speler_scores
@@ -92,8 +92,8 @@ def open_ai_window(home):
 
 
 def start_quiz():
-    global naam, quizepad
-    # Maak een nieuw venster voor de quiz
+    global naam, quizepad, timer_enabled
+
     quiz_window = ui.CTkToplevel()
     quiz_window.geometry(f"{windowX}x{windowY}")
     quiz_window.title("Quiz")
@@ -143,23 +143,29 @@ def start_quiz():
     def check_answer(selected_option):
         nonlocal current_question, score, Levens
 
+        # Verberg de timer
+        timer_label.pack_forget()
+
         if selected_option == answers[current_question]:
             score += 1
             answer_label.configure(text=f"correct", text_color="Green")
         else:
             Levens -= 1
             answer_label.configure(text=f"FOUT antwoordt was {get_answer_text(answers[current_question])}", text_color="red")
-        
+
         current_question += 1
         if Levens <= 0:
             quiz_window.destroy()
             show_results(score)
         else:
-            def next_qestion():
+            def next_question():
                 answer_label.configure(text="")
+                # Maak de timer weer zichtbaar en reset deze
+                timer_label.pack(pady=10)
+                countdown(time, timer_label, quiz_window, on_timeout=lambda: check_answer(9))
                 update_question()
 
-            quiz_window.after(3600, next_qestion)#sleep werkte niet en after neemt maar een argumet van daar de extra fucntion next qestion
+            quiz_window.after(3600, next_question)  # sleep werkte niet en after neemt maar een argument, vandaar de extra functie next_question
 
     # Maak een frame voor de quizinformatie
     info_frame = ui.CTkFrame(quiz_window)
@@ -205,6 +211,23 @@ def start_quiz():
     # Start de eerste vraag
     update_question()
 
+    if timer_enabled:
+        # Timer label
+        timer_label = ui.CTkLabel(quiz_window, text="20", font=("Arial", 48), text_color="red")
+        timer_label.pack(pady=10)
+
+        # Start de countdown
+        countdown(time, timer_label, quiz_window, on_timeout=lambda: check_answer(9))
+
+def countdown(time_left, label, window, on_timeout):
+    if time_left > 0:
+        label.configure(text=str(time_left))
+        window.after(1000, countdown, time_left - 1, label, window, on_timeout)
+    else:
+        # Tijd is om, markeer de vraag als fout
+        label.configure(text="Tijd is om!")
+        on_timeout()
+
 def show_results(score):
     global naam, quizepad
     # Haal de categorie naam uit het pad
@@ -235,6 +258,16 @@ def show_results(score):
     close_button = ui.CTkButton(result_window, text="Sluiten", width=button_width, height=button_height, font=button_font, command=lambda: [result_window.destroy(), home_start()])
     close_button.pack(pady=20)
 
+timer_enabled = False
+
+def toggle_timer(timer_toggle_button):
+    global timer_enabled
+    timer_enabled = not timer_enabled
+    if timer_enabled:
+        timer_toggle_button.configure(text="Timer is Aan")
+    else:
+        timer_toggle_button.configure(text="Timer is Uit")
+
 def Open_Quiz_setup(home):
     global quizepad
 
@@ -255,7 +288,6 @@ def Open_Quiz_setup(home):
     name_entry.pack(pady=20)
     error_label = ui.CTkLabel(setup_frame, text="", font=("Arial", 20), text_color="red")
     error_label.pack(pady=5)
-
     # Categorie selectie
     # Lees categorieën uit het bestand
     with open(catagorypad, 'r') as file:
@@ -304,7 +336,10 @@ def Open_Quiz_setup(home):
         else:
             Quiz_setup.withdraw()
             start_quiz()
-
+    # Timer toggle button
+    timer_toggle_button = ui.CTkButton(setup_frame, text="Timer isUit", width=button_width, height=button_height, font=button_font, command=lambda:toggle_timer(timer_toggle_button))
+    timer_toggle_button.pack(pady=20)         
+    # Next 
     next_button = ui.CTkButton(setup_frame, text="Next", width=button_width, height=button_height, font=button_font, command=next)
     next_button.pack(pady=20)
 
