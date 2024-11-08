@@ -23,6 +23,7 @@ catagorypad = "catogory.txt"
 quizepad = ""
 speler_scores = {}
 time = 20
+
 # Functie om de scores te laden
 def load_scores():
     global speler_scores
@@ -38,6 +39,17 @@ def save_scores():
         json.dump(speler_scores, file)
 
 load_scores()
+
+# Functie om de categorieen te laden
+def load_categories():
+    with open(catagorypad, "r") as file:
+        return [line.strip() for line in file if line.strip()]
+
+# Functie om de categorieen op te slaan
+def save_categories(categories):
+    with open(catagorypad, "w") as file:
+        for category in categories:
+            file.write(f"{category}\n")
 
 def open_ai_window(home):
     home.destroy()
@@ -402,7 +414,37 @@ def open_settings(home):
     color_selection_box = ui.CTkOptionMenu(settings_frame, variable=selected_color, values=color_choices, width=button_width, height=button_height, font=button_font, command=change_color_theme)
     color_selection_box.pack(pady=20)
 
-    # Terug-knop
+    # Categorie verwijderen
+    categories = load_categories() # Haal alle categorieen uit catogory.txt
+    if categories:
+        selected_remove_category = ui.StringVar(value=categories[0]) # Start met de eerste categorie als geselecteerd
+        # Functie om categorieen te verwijderen
+        def remove_category():
+            category = selected_remove_category.get()
+            if category in categories:
+                categories.remove(category) # Verwijder de geselecteerde categorie
+                save_categories(categories)  # Update het bestand catogory.txt
+                # Verwijder het bestand van de categorie
+                category_file = f"{category}"
+                if os.path.exists(category_file): # Controleer of het bestand bestaat
+                    os.remove(category_file) # Verwijder het bestand
+                selected_remove_category.set(categories[0] if categories else "") # Update de waarde van selected_remove_category
+                category_menu.configure(values=categories) # Update het dropdown-menu
+                category_remove_label.configure(text=f"Categorie '{category}' verwijderd")  # Update de tekst van category_remove_label
+        # Label met tekst
+        category_label = ui.CTkLabel(settings_frame, text="Verwijder Categorie:", font=("Arial", 24))
+        category_label.pack(pady=5)
+        # Dropdown-menu met categorieen om de geselecteerde categorie te wijzigen
+        category_menu = ui.CTkOptionMenu(settings_frame, variable=selected_remove_category, values=categories, width=button_width, height=button_height, font=button_font)
+        category_menu.pack(pady=20)
+        # Label met tekst om weer te geven welke categorie is verwijderd
+        category_remove_label = ui.CTkLabel(settings_frame, text="", font=("Arial", 16), text_color="red")
+        category_remove_label.pack(pady=5)
+        # Verwijder-knop om de geselecteerde categorie te verwijderen
+        category_button = ui.CTkButton(settings_frame, text="Verwijder", width=button_width, height=button_height, font=button_font, command=remove_category)
+        category_button.pack(pady=20)
+
+    # Terug-knop om terug te keren naar het hoofdscherm
     back_button = ui.CTkButton(settings_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: close_window(settings_window))
     back_button.pack(pady=20)
 
@@ -429,13 +471,13 @@ def open_score_board(home):
         back_button = ui.CTkButton(score_board_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: close_window(score_board_window))
         back_button.pack(pady=20)
     else:
-        # Dropdown-menu om speler te selecteren
+        # Toon Dropdown-menu om speler te selecteren
         players = list(speler_scores.keys())  # Haal alle speler namen uit de dataset
-        selected_player = ui.StringVar(value=players[0])  # Start met de eerste speler geselecteerd
+        selected_player = ui.StringVar(value=players[0])  # Start met de eerste speler als geselecteerd
 
         # Label om de geselecteerde speler en scores te tonen
-        score_display_label = ui.CTkLabel(score_board_frame, text="", font=("Arial", 20))
-        score_display_label.pack(pady=20)
+        player_scores_label = ui.CTkLabel(score_board_frame, text="", font=("Arial", 20))
+        player_scores_label.pack(pady=20)
 
         # Functie om scores van de geselecteerde speler te tonen
         def show_selected_player_scores(speler):
@@ -444,16 +486,13 @@ def open_score_board(home):
                 scores_text += "\n".join([f"Categorie: {cat} - Hi-score: {score}" for cat, score in speler_scores[speler].items()])
 
             # Update het label met scores van de geselecteerde speler
-            score_display_label.configure(text=scores_text)
+            player_scores_label.configure(text=scores_text)
 
         # Dropdown-menu met spelers om de geselecteerde speler te wijzigen
-        player_selection_box = ui.CTkOptionMenu(
-            score_board_frame, variable=selected_player, values=players,
-            width=button_width, height=button_height, font=button_font,
-            command=show_selected_player_scores)
+        player_selection_box = ui.CTkOptionMenu(score_board_frame, variable=selected_player, values=players, width=button_width, height=button_height, font=button_font, command=show_selected_player_scores)
         player_selection_box.pack(pady=20)
 
-        # Toon scores van de standaard geselecteerde speler
+        # Toon scores van de standaard eerst geselecteerde speler
         show_selected_player_scores(selected_player.get())
 
         # Terug-knop om terug te keren naar het hoofdscherm

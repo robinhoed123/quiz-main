@@ -3,4 +3,6 @@ apple.txt
 quinten.txt
 Robin.txt
 melk.txt
-ergha.txt
+katten.txt
+dieren.txt
+oorlog.txt
