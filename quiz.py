@@ -156,7 +156,8 @@ def start_quiz():
         nonlocal current_question, score, Levens
 
         # Verberg de timer
-        timer_label.pack_forget()
+        if(timer_enabled):
+            timer_label.pack_forget()
 
         if selected_option == answers[current_question]:
             score += 1
@@ -173,10 +174,11 @@ def start_quiz():
             def next_question():
                 answer_label.configure(text="")
                 # Maak de timer weer zichtbaar en reset deze
-                global time 
-                time = 20
-                timer_label.configure(text=str(time))
-                timer_label.pack(pady=10)
+                if(timer_enabled):
+                    global time 
+                    time = 20
+                    timer_label.configure(text=str(time))
+                    timer_label.pack(pady=10)
                 update_question()
 
             quiz_window.after(3600, next_question)  # sleep werkte niet en after neemt maar een argument, vandaar de extra functie next_question
