@@ -173,8 +173,10 @@ def start_quiz():
             def next_question():
                 answer_label.configure(text="")
                 # Maak de timer weer zichtbaar en reset deze
+                global time 
+                time = 20
+                timer_label.configure(text=str(time))
                 timer_label.pack(pady=10)
-                countdown(time, timer_label, quiz_window, on_timeout=lambda: check_answer(9))
                 update_question()
 
             quiz_window.after(3600, next_question)  # sleep werkte niet en after neemt maar een argument, vandaar de extra functie next_question
@@ -232,9 +234,12 @@ def start_quiz():
         countdown(time, timer_label, quiz_window, on_timeout=lambda: check_answer(9))
 
 def countdown(time_left, label, window, on_timeout):
+    global time
     if time_left > 0:
+        time_left = time
         label.configure(text=str(time_left))
-        window.after(1000, countdown, time_left - 1, label, window, on_timeout)
+        time = time - 1
+        window.after(1000, countdown, time_left, label, window, on_timeout)
     else:
         # Tijd is om, markeer de vraag als fout
         label.configure(text="Tijd is om!")
