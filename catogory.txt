@@ -1,8 +1,7 @@
-ruimte.txt
-apple.txt
-quinten.txt
-Robin.txt
-melk.txt
-katten.txt
-dieren.txt
-oorlog.txt
+kaas.txt
+niger.txt
+zwartpersoon.txt
+robinHerickx.txt
+QuintenSeymons.txt
+KathleenHerickx.txt
+ThomasDeClerck.txt
