@@ -1,0 +1,120 @@
+Wie is robinHerickx?
+A Een Belgische zanger
+B Een Nederlandse schrijver
+C Een Belgische programmeur
+D Een Duitse kunstenaar
+C
+Wat is de specialisatie van robinHerickx?
+A Machine learning
+B Web development
+C Game design
+D Data analyse
+B
+In welk land woont robinHerickx?
+A Nederland
+B Duitsland
+C België
+D Frankrijk
+C
+Welke programmeertaal gebruikt robinHerickx het meest?
+A Python
+B Java
+C JavaScript
+D C++
+C
+Met welk framework werkt robinHerickx vaak?
+A React
+B Angular
+C Vue
+D Svelte
+A
+Wat is een hobby van robinHerickx?
+A Gamen
+B Lezen
+C Sporten
+D Muziek
+A
+Welke browser gebruikt robinHerickx waarschijnlijk het meest?
+A Chrome
+B Firefox
+C Safari
+D Edge
+A
+Wat is een belangrijk aspect van web development?
+A Design
+B Functionaliteit
+C Toegankelijkheid
+D Alle bovenstaande
+D
+Wat is de rol van een front-end developer?
+A Gebruikersinterface ontwikkelen
+B Database beheren
+C Server beheren
+D Marketing
+A
+Wat is de rol van een back-end developer?
+A Server-side logica
+B Gebruikersinterface ontwerpen
+C Databases testen
+D Project management
+A
+Wat is een API?
+A Application Programming Interface
+B Advanced Programming Interface
+C Application Processing Interface
+D Advanced Processing Interface
+A
+Wat is HTML?
+A HyperText Markup Language
+B High-Level Text Manipulation Language
+C HyperText Manipulation Language
+D High-Level Text Markup Language
+A
+Wat is CSS?
+A Cascading Style Sheets
+B Creative Style Sheets
+C Cascading Styling Sheets
+D Creative Styling Sheets
+A
+Wat is JavaScript?
+A Een scripttaal voor web development
+B Een server-side taal
+C Een databasetaal
+D Een markup taal
+A
+Wat is een database?
+A Een gestructureerde verzameling data
+B Een type server
+C Een programmeertaal
+D Een besturingssysteem
+A
+Wat is een server?
+A Een computer die diensten levert
+B Een type software
+C Een programmeertaal
+D Een database
+A
+Wat is cloud computing?
+A Online dataopslag en -verwerking
+B Een type server
+C Een programmeertaal
+D Een besturingssysteem
+A
+Waarvoor wordt Git gebruikt?
+A Versiebeheer
+B Project management
+C Web development
+D Data analyse
+A
+Wat is een belangrijk aspect van UX design?
+A Gebruikerservaring
+B Server-side logica
+C Database management
+D Marketing
+A
+Wat is een belangrijk aspect van UI design?
+A Gebruikersinterface
+B Server-side logica
+C Database management
+D Marketing
+A
