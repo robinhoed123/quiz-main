@@ -1,8 +1,0 @@
-ruimte.txt
-apple.txt
-quinten.txt
-Robin.txt
-melk.txt
-katten.txt
-dieren.txt
-oorlog.txt
