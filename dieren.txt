@@ -1,0 +1,120 @@
+Welk dier is een zoogdier?
+A Vis
+B Vogel
+C Hond
+D Reptiel
+C
+Welk dier legt eieren?
+A Koe
+B Kip
+C Varken
+D Hond
+B
+Welk dier kan vliegen?
+A Leeuw
+B Olifant
+C Adelaar
+D Slang
+C
+Welk dier leeft in de zee?
+A Tijger
+B Haas
+C Walvis
+D Wolf
+C
+Welk dier is een insect?
+A Spin
+B Mier
+C Worm
+D Slak
+B
+Welk dier heeft een slurf?
+A Giraffe
+B Olifant
+C Zebra
+D Leeuw
+B
+Welk dier is een reptiel?
+A Kikker
+B Slang
+C Muis
+D Vogel
+B
+Welk dier heeft veren?
+A Vis
+B Vogel
+C Hond
+D Slang
+B
+Welk dier is een amfibie?
+A Slang
+B Kikker
+C Vogel
+D Hond
+B
+Welk dier eet gras?
+A Leeuw
+B Koe
+C Tijger
+D Wolf
+B
+Welk dier heeft klauwen?
+A Kat
+B Slang
+C Vis
+D Vogel
+A
+Welk dier blaft?
+A Kat
+B Hond
+C Koe
+D Kip
+B
+Welk dier miauwt?
+A Hond
+B Kat
+C Vogel
+D Vis
+B
+Welk dier is een roofdier?
+A Konijn
+B Leeuw
+C Schaap
+D Koe
+B
+Welk dier zwemt in de zee?
+A Dolfijn
+B Hond
+C Kat
+D Kip
+A
+Welk dier heeft een lange nek?
+A Giraffe
+B Hond
+C Kat
+D Muis
+A
+Welk dier heeft een staart?
+A Hond
+B Slang
+C Vis
+D Alle bovenstaande
+D
+Welk dier leeft in het bos?
+A Wolf
+B Haai
+C Walvis
+D Krokodil
+A
+Welk dier is een huisdier?
+A Leeuw
+B Tijger
+C Hamster
+D Wolf
+C
+Welk dier legt eieren in het water?
+A Kip
+B Kikker
+C Hond
+D Kat
+B
