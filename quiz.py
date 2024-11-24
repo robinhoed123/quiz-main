@@ -437,26 +437,39 @@ def open_settings(home):
 
     # Categorie verwijderen
     categories = load_categories() # Haal alle categorieen uit catogory.txt
+    ui_categories = [category.replace(".txt", "") for category in categories] # Verwijder .txt van de categorienaam
     if categories:
-        selected_remove_category = ui.StringVar(value=categories[0]) # Start met de eerste categorie als geselecteerd
+        selected_remove_category = ui.StringVar(value=ui_categories[0]) # Start met de eerste categorie als geselecteerd
         # Functie om categorieen te verwijderen
         def remove_category():
-            category = selected_remove_category.get()
+            ui_category = selected_remove_category.get()
+            category = f"{ui_category}.txt" # Voeg .txt toe aan de categorienaam
             if category in categories:
                 categories.remove(category) # Verwijder de geselecteerde categorie
                 save_categories(categories)  # Update het bestand catogory.txt
                 # Verwijder het bestand van de categorie
-                category_file = f"{category}"
-                if os.path.exists(category_file): # Controleer of het bestand bestaat
-                    os.remove(category_file) # Verwijder het bestand
-                selected_remove_category.set(categories[0] if categories else "") # Update de waarde van selected_remove_category
-                category_menu.configure(values=categories) # Update het dropdown-menu
-                category_remove_label.configure(text=f"Categorie '{category}' verwijderd")  # Update de tekst van category_remove_label
+                if os.path.exists(category): # Controleer of het bestand bestaat
+                    os.remove(category) # Verwijder het bestand
+                # Verwijder de highscores van de categorie
+                global speler_scores
+                for speler in list(speler_scores.keys()):
+                    if ui_category in speler_scores[speler]:
+                        del speler_scores[speler][ui_category]
+                save_scores() # Sla de aangepaste highscores op
+                ui_categories = [cat.replace(".txt", "") for cat in categories] # Update ui_categories na verwijdering
+                # Update de waarde van selected_remove_category
+                if ui_categories:
+                    selected_remove_category.set(ui_categories[0])
+                else:
+                    selected_remove_category.set("")
+                category_menu.configure(values=ui_categories) # Update het dropdown-menu
+                category_remove_label.configure(text=f"Categorie '{ui_category}' verwijderd")  # Update de tekst van category_remove_label
+
         # Label met tekst
         category_label = ui.CTkLabel(settings_frame, text="Verwijder Categorie:", font=("Arial", 24))
         category_label.pack(pady=5)
         # Dropdown-menu met categorieen om de geselecteerde categorie te wijzigen
-        category_menu = ui.CTkOptionMenu(settings_frame, variable=selected_remove_category, values=categories, width=button_width, height=button_height, font=button_font)
+        category_menu = ui.CTkOptionMenu(settings_frame, variable=selected_remove_category, values=ui_categories, width=button_width, height=button_height, font=button_font)
         category_menu.pack(pady=20)
         # Label met tekst om weer te geven welke categorie is verwijderd
         category_remove_label = ui.CTkLabel(settings_frame, text="", font=("Arial", 16), text_color="red")
