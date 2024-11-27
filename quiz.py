@@ -178,6 +178,12 @@ def start_quiz():
     def check_answer(selected_option):
         nonlocal current_question, score, Levens
 
+        # Schakel alle knoppen uit
+        A_button.configure(state="disabled")
+        B_button.configure(state="disabled")
+        C_button.configure(state="disabled")
+        D_button.configure(state="disabled")
+
         # Verberg de timer
         if(timer_enabled):
             timer_label.pack_forget()
@@ -204,6 +210,11 @@ def start_quiz():
                     time = 20
                     timer_label.configure(text=str(time))
                     timer_label.pack(pady=10)
+                # Schakel de knoppen weer in voor de volgende vraag
+                A_button.configure(state="normal")
+                B_button.configure(state="normal")
+                C_button.configure(state="normal")
+                D_button.configure(state="normal")
                 update_question()
 
             quiz_window.after(3600, next_question)  # sleep werkte niet en after neemt maar een argument, vandaar de extra functie next_question
