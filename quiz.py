@@ -114,7 +114,6 @@ def open_ai_window(home):
             ai_window.destroy()
             start_quiz()
 
-
 def start_quiz():
     global naam, quizepad, timer_enabled
 
@@ -146,21 +145,33 @@ def start_quiz():
 
     def update_question():
         nonlocal current_question, score, Levens
-
+        width = 4
         if current_question >= len(questions):
             # Quiz is afgelopen want je hebt alle vragen beantwoord
             quiz_window.destroy()
             show_results(score)
             return
-
+        def new_string(string, allowed_width):
+                 new_string = ""
+                 width = 0
+                 woorden = string.split(" ")
+                 for woord in woorden:
+                     width += len(woord) + 1
+                     if width >= allowed_width:
+                         new_string = new_string[:-1]
+                         width= len(woord) +1
+                         new_string += "\n"
+                     new_string += woord + " "
+                 new_string = new_string[:-1]
+                 return new_string
         question_label.configure(text=questions[current_question])
-        A_button.configure(text=options[current_question][0])
-        B_button.configure(text=options[current_question][1])
-        C_button.configure(text=options[current_question][2])
-        D_button.configure(text=options[current_question][3])
+        A_button.configure(text=new_string(options[current_question][0], width))
+        B_button.configure(text=new_string(options[current_question][1], width))
+        C_button.configure(text=new_string(options[current_question][2], width))
+        D_button.configure(text=new_string(options[current_question][3], width))
         score_label.configure(text=f"Score: {score}")
         lives_label.configure(text=f"Levens: {Levens}")
-                                                                                                                                                                                   
+                                                                                                                                                                               
     def get_answer_text(option):
         option_index = {'A': 0, 'B': 1, 'C': 2, 'D': 3}
         return options[current_question][option_index[option]]
