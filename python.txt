@@ -1,0 +1,120 @@
+Wat is de juiste manier om een commentaar toe te voegen in Python?
+A  /* Dit is een commentaar */
+B  // Dit is een commentaar
+C  # Dit is een commentaar
+D  <!-- Dit is een commentaar -->
+C
+Welke functie gebruik je om de lengte van een string te bepalen?
+A  length()
+B  size()
+C  len()
+D  count()
+C
+Wat is de output van print(type(3.14))?
+A  <class 'int'>
+B  <class 'float'>
+C  <class 'string'>
+D  <class 'double'>
+B
+Hoe definieer je een functie in Python?
+A  function mijn_functie():
+B  def mijn_functie():
+C  func mijn_functie():
+D  define mijn_functie():
+B
+Welke operator wordt gebruikt voor machtsverheffen?
+A  ^
+B  **
+C  ^^
+D  //
+B
+Wat is de output van print(10 % 3)?
+A  3
+B  1
+C  0
+D  3.33
+B
+Welke keyword wordt gebruikt om een loop te verlaten?
+A  exit
+B  break
+C  continue
+D  stop
+B
+Wat is de output van print("Hallo" + "Wereld")?
+A  Hallo Wereld
+B  HalloWereld
+C  Hallo+Wereld
+D  Error
+B
+Wat is de datastructuur die data opslaat in key-value pairs?
+A  List
+B  Tuple
+C  Dictionary
+D  Set
+C
+Hoe importeer je de math module?
+A  include math
+B  import math
+C  using math
+D  require math
+B
+Wat is de output van print(True and False)?
+A  True
+B  False
+C  Error
+D  None
+B
+Wat is de output van print(True or False)?
+A  True
+B  False
+C  Error
+D  None
+A
+Welke functie wordt gebruikt om een string naar een integer te converteren?
+A  str()
+B  int()
+C  float()
+D  convert()
+B
+Wat is de output van print(list(range(3)))?
+A  [1, 2, 3]
+B  [0, 1, 2]
+C  [0, 1, 2, 3]
+D  Error
+B
+Welke keyword wordt gebruikt om een voorwaarde te controleren?
+A  check
+B  if
+C  test
+D  when
+B
+Wat is de output van print("Python"[2])?
+A  P
+B  y
+C  t
+D  h
+C
+Hoe open je een bestand genaamd "bestand.txt" om te lezen?
+A  open("bestand.txt", "r")
+B  open("bestand.txt", "w")
+C  open("bestand.txt", "read")
+D  open("bestand.txt")
+A
+Wat doet de append() methode bij een list?
+A  Voegt een element toe aan het begin
+B  Voegt een element toe aan het einde
+C  Verwijdert een element
+D  Sorteert de list
+B
+Wat is de output van print(5 // 2)?
+A  2.5
+B  2
+C  3
+D  Error
+B
+Wat doet de strip() methode bij een string?
+A  Verwijdert whitespace aan het begin en einde
+B  Verwijdert alle spaties
+C  Converteert naar hoofdletters
+D  Converteert naar kleine letters
+A

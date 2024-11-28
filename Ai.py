@@ -7,7 +7,7 @@ $ pip install google-generativeai
 import os
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyB3Gr6x1S_T2l0OwNvh7vSjF5GbX4snV9c")
+genai.configure(api_key="AIzaSyCt2Ey-gYMmk9LlJ67PDuyw8ZWclC9Eq2I")
 
 # Create the model
 generation_config = {
@@ -19,7 +19,7 @@ generation_config = {
 }
 
 model = genai.GenerativeModel(
-  model_name="gemini-1.5-pro",
+  model_name="gemini-1.5-flash",
   generation_config=generation_config,
   # safety_settings = Adjust safety settings
   # See https://ai.google.dev/gemini-api/docs/safety-settings
