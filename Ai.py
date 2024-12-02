@@ -7,14 +7,14 @@ $ pip install google-generativeai
 import os
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyCt2Ey-gYMmk9LlJ67PDuyw8ZWclC9Eq2I")
+genai.configure(api_key="AIzaSyANDvi-hHTOmC-WFUzhGFin6W07Dwe7TAk")
 
 # Create the model
 generation_config = {
   "temperature": 1,
   "top_p": 0.95,
   "top_k": 64,
-  "max_output_tokens": 3000,
+  "max_output_tokens": 1400,
   "response_mime_type": "text/plain",
 }
 
