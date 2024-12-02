@@ -112,7 +112,7 @@ def open_ai_window(home):
             global quizepad
             quizepad = result
             ai_window.destroy()
-            start_quiz()
+            Open_Quiz_setup()
 
 def start_quiz():
     global naam, quizepad, timer_enabled
