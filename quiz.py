@@ -1,3 +1,4 @@
+#-----Imports-----#
 import customtkinter as ui
 import re
 import random
@@ -6,6 +7,9 @@ import json
 import os
 import atexit
 import pygame
+#-----------------#
+
+
 # Initialize pygame mixer
 pygame.mixer.init()
 
@@ -19,8 +23,10 @@ def fail():
 def success(): 
     pygame.mixer.music.load("corect.mp3")
     pygame.mixer.music.play()
-DATASET_FILE = "speler_scores.json"
 
+
+#-----Variables/Constants-----#
+DATASET_FILE = "speler_scores.json"
 # Definieer knopafmetingen
 windowX = 1200
 windowY = 800
@@ -35,7 +41,10 @@ catagorypad = "catogory.txt"
 quizepad = ""
 speler_scores = {}
 time = 20
+#-----------------------------#
 
+
+#-----Loading/Saving-----#
 # Functie om de scores te laden
 def load_scores():
     global speler_scores
@@ -62,7 +71,10 @@ def save_categories(categories):
     with open(catagorypad, "w") as file:
         for category in categories:
             file.write(f"{category}\n")
+#------------------------#
 
+
+#-----AI-Pagina-----#
 def open_ai_window(home):
     home.destroy()
     ai_window = ui.CTkToplevel()
@@ -113,7 +125,10 @@ def open_ai_window(home):
             quizepad = result
             ai_window.destroy()
             Open_Quiz_setup()
+#-------------------#
 
+
+#-----Quiz-----#
 def start_quiz():
     global naam, quizepad, timer_enabled
 
@@ -322,7 +337,10 @@ def toggle_timer(timer_toggle_button):
         timer_toggle_button.configure(text="Timer is Aan")
     else:
         timer_toggle_button.configure(text="Timer is Uit")
+#--------------#
 
+
+#-----StartQuizPagina-----#
 def Open_Quiz_setup(home):
     global quizepad
 
@@ -343,6 +361,7 @@ def Open_Quiz_setup(home):
     name_entry.pack(pady=20)
     error_label = ui.CTkLabel(setup_frame, text="", font=("Arial", 20), text_color="red")
     error_label.pack(pady=5)
+
     # Categorie selectie
     # Lees categorieën uit het bestand
     with open(catagorypad, 'r') as file:
@@ -391,9 +410,11 @@ def Open_Quiz_setup(home):
         else:
             Quiz_setup.withdraw()
             start_quiz()
+
     # Timer toggle button
     timer_toggle_button = ui.CTkButton(setup_frame, text="Timer is Uit", width=button_width, height=button_height, font=button_font, command=lambda: [click(), toggle_timer(timer_toggle_button)])
-    timer_toggle_button.pack(pady=20)         
+    timer_toggle_button.pack(pady=20)
+
     # Next 
     next_button = ui.CTkButton(setup_frame, text="Next", width=button_width, height=button_height, font=button_font, command=lambda: [click(), next()])
     next_button.pack(pady=20)
@@ -401,7 +422,10 @@ def Open_Quiz_setup(home):
     # Terug-knop om het venster te sluiten en het hoofdvenster weer te tonen
     back_button = ui.CTkButton(setup_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: [click(), close_window(Quiz_setup)])
     back_button.pack(pady=20)
+#-------------------------#
 
+
+#-----InstellingenPagina-----#
 # Open instellingen
 def open_settings(home):
     # Verberg het hoofdvenster
@@ -462,6 +486,7 @@ def open_settings(home):
     ui_categories = [category.replace(".txt", "") for category in categories] # Verwijder .txt van de categorienaam
     if categories:
         selected_remove_category = ui.StringVar(value=ui_categories[0]) # Start met de eerste categorie als geselecteerd
+
         # Functie om categorieen te verwijderen
         def remove_category():
             ui_category = selected_remove_category.get()
@@ -490,12 +515,15 @@ def open_settings(home):
         # Label met tekst
         category_label = ui.CTkLabel(settings_frame, text="Verwijder Categorie:", font=("Arial", 24))
         category_label.pack(pady=5)
+
         # Dropdown-menu met categorieen om de geselecteerde categorie te wijzigen
         category_menu = ui.CTkOptionMenu(settings_frame, variable=selected_remove_category, values=ui_categories, width=button_width, height=button_height, font=button_font)
         category_menu.pack(pady=20)
+
         # Label met tekst om weer te geven welke categorie is verwijderd
         category_remove_label = ui.CTkLabel(settings_frame, text="", font=("Arial", 16), text_color="red")
         category_remove_label.pack(pady=5)
+
         # Verwijder-knop om de geselecteerde categorie te verwijderen
         category_button = ui.CTkButton(settings_frame, text="Verwijder", width=button_width, height=button_height, font=button_font, command=remove_category)
         category_button.pack(pady=20)
@@ -503,7 +531,10 @@ def open_settings(home):
     # Terug-knop om terug te keren naar het hoofdscherm
     back_button = ui.CTkButton(settings_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: [click(), close_window(settings_window)])
     back_button.pack(pady=20)
+#----------------------------#
 
+
+#-----ScoreBoardPagina-----#
 def open_score_board(home):
     # Verberg het hoofdvenster
     home.destroy()
@@ -554,6 +585,8 @@ def open_score_board(home):
         # Terug-knop om terug te keren naar het hoofdscherm
         back_button = ui.CTkButton(score_board_frame, text="Back", width=button_width, height=button_height, font=button_font, command=lambda: [click(), close_window(score_board_window)])
         back_button.pack(pady=20)
+#--------------------------#
+
 
 # Zorg ervoor dat save_scores wordt aangeroepen bij afsluiten
 atexit.register(save_scores)
@@ -565,9 +598,12 @@ def close_window(window):
 def exit_app():
     welcome.quit()
 
+
+#-----HomePage-----#
 def home_start():
     # Verberg het welkomstvenster als het bestaat
     welcome.withdraw()
+
     # Initialiseer het hoofdvenster
     home = ui.CTkToplevel()
     home.geometry(f"{windowX}x{windowY}")
@@ -585,31 +621,43 @@ def home_start():
     start_quiz_button = ui.CTkButton(button_frame, text="Start Quiz", width=button_width, height=button_height, font=button_font)
     start_quiz_button.grid(row=0, column=0, padx=30, pady=18)
     start_quiz_button.configure(command=lambda: [click(), Open_Quiz_setup(home)])
+
     # Instellingen knop
     settings_button = ui.CTkButton(button_frame, text="Instellingen", width=button_width, height=button_height, font=button_font)
     settings_button.grid(row=1, column=0, padx=30, pady=18)
     settings_button.configure(command=lambda: [click(), open_settings(home)])
+
     # AI knop
     ai_button = ui.CTkButton(button_frame, text="AI", width=button_width, height=button_height, font=button_font)
     ai_button.grid(row=2, column=0, padx=30, pady=18)
     ai_button.configure(command=lambda: [click(), open_ai_window(home)])
+
     # Score Bord knop
     score_board_button = ui.CTkButton(button_frame, text="Score Bord", width=button_width, height=button_height, font=button_font)
     score_board_button.grid(row=3, column=0, padx=30, pady=18)
     score_board_button.configure(command=lambda: [click(), open_score_board(home)])
+    
     # Exit knop
     exit_button = ui.CTkButton(button_frame, text="Exit", width=button_width, height=button_height, font=button_font)
     exit_button.grid(row=4, column=0, padx=30, pady=18)
     exit_button.configure(command=lambda: [click(), exit_app()])
+#------------------#
+
+
+#-----WelkomPagina-----#
 # Initialiseer het welkomstvenster
 welcome = ui.CTk()
 welcome.geometry(f"{windowX}x{windowY}")
 welcome.title("WELCOME")
+
 # Maak een welkomstlabel
 welcome_label = ui.CTkLabel(welcome, text="Welkom bij de Quiz", font=("Arial", 60))
 welcome_label.pack(pady=80)
+
 # Maak een knop om naar het hoofdscherm te gaan
 home_button = ui.CTkButton(welcome, text="Ga naar Home", width=button_width, height=button_height, font=button_font, command=lambda: [click(), home_start()])
 home_button.pack(pady=20)
+
 # Start de applicatie
 welcome.mainloop()
+#----------------------#
