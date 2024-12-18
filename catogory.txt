@@ -4,3 +4,5 @@ marvel.txt
 dc.txt
 dinos.txt
 games.txt
+katten.txt
+oorlog.txt
