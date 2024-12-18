@@ -4,3 +4,6 @@ marvel.txt
 dc.txt
 dinos.txt
 games.txt
+cake.txt
+toert.txt
+hell.txt

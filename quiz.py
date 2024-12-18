@@ -76,7 +76,6 @@ def save_categories(categories):
 
 #-----AI-Pagina-----#
 def open_ai_window(home):
-    home.destroy()
     ai_window = ui.CTkToplevel()
     ai_window.geometry(f"{windowX}x{windowY}")
     ai_window.title("AI")
@@ -102,10 +101,10 @@ def open_ai_window(home):
     back_button.pack(side="left", padx=10)
 
     # Voeg de "Start Quiz" knop toe
-    start_quiz_button = ui.CTkButton(button_frame, text="generate Quiz", command=lambda: [click(), gen_quiz()], width=button_width/2, height=button_height, font=button_font)
+    start_quiz_button = ui.CTkButton(button_frame, text="generate Quiz", command=lambda: [click(), gen_quiz(home)], width=button_width/2, height=button_height, font=button_font)
     start_quiz_button.pack(side="right", padx=10)
 
-    def gen_quiz():
+    def gen_quiz(home):
         theme = theme_entry.get().strip()
         if not theme:
             error_label.configure(text="Thema mag niet leeg zijn")
@@ -124,7 +123,7 @@ def open_ai_window(home):
             global quizepad
             quizepad = result
             ai_window.destroy()
-            Open_Quiz_setup()
+            Open_Quiz_setup(home)
 #-------------------#
 
 
