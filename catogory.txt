@@ -6,3 +6,4 @@ dinos.txt
 games.txt
 katten.txt
 oorlog.txt
+pizza.txt

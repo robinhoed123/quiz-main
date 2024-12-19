@@ -7,9 +7,9 @@ $ pip install google-generativeai
 import os
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyANDvi-hHTOmC-WFUzhGFin6W07Dwe7TAk")
-
-# Create the model
+#dit stuk code (het opzetten van de api) komt rechtstreeks uit de documentatie#
+# zie https://ai.google.dev/gemini-api/docs
+genai.configure(api_key="AIzaSyANDvi-hHTOmC-WFUzhGFin6W07Dwe7TAk")#api key
 generation_config = {
   "temperature": 1,
   "top_p": 0.95,
@@ -19,12 +19,10 @@ generation_config = {
 }
 
 model = genai.GenerativeModel(
-  model_name="gemini-1.5-flash",
+  model_name="gemini-1.5-flash",#het model
   generation_config=generation_config,
-  # safety_settings = Adjust safety settings
-  # See https://ai.google.dev/gemini-api/docs/safety-settings
 )
-
+#----------------------#
 def generate_quiz(thema):
     # Start een chatsessie
     chat_session = model.start_chat()
@@ -38,7 +36,7 @@ def generate_quiz(thema):
     with open(file_path, "w", encoding="utf-8") as file:
         file.write(response.text)
 
-    # Controleer of het bestand correct is opgesteld
+#----------------------#
     if validate_quiz_file(file_path):
         with open("catogory.txt", "a", encoding="utf-8") as cat_file:
             cat_file.write(f"{file_path}\n")
@@ -46,7 +44,7 @@ def generate_quiz(thema):
     else:
         os.remove(file_path)
         return -1
-
+# Controleer of het bestand correct is opgesteld
 def validate_quiz_file(file_path):
     with open(file_path, "r", encoding="utf-8") as file:
         lines = file.readlines()
@@ -59,10 +57,6 @@ def validate_quiz_file(file_path):
         if len(lines) % 6 != 0:
              return False
         for i in range(0, len(lines), 6):
-            # if len(lines[i].strip()) > 60:
-            #     return False
-            # if any(len(lines[i + j].strip()) > 32 for j in range(1, 5)):  #we moeten dit nog fixen AI kan niet tellen en genereert veel te lange antwoorden /vragen
-            #     return False
             if lines[i + 5].strip() not in {'A', 'B', 'C', 'D'}:
                 return False
     return True
